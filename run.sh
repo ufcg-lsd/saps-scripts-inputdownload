@@ -1,0 +1,9 @@
+#!/bin/bash
+
+DATASET=$1
+REGION=$2
+DATE=$3
+RESULTS=$4
+METADATA=$5
+
+python download.py $DATASET $REGION $DATE $RESULTS
