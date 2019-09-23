@@ -22,7 +22,8 @@ SANDBOX=$(pwd)
 INPUTDOWNLOADING_DIR_PATH=$ROOT_DIR/inputdownloading
 
 echo "Step 1. Download image and generate station data"
-java -Dlog4j.configuration=file:/home/ubuntu/config/log4j.properties -jar /home/ubuntu/USGS.jar $IMAGE_DATASET $IMAGE_PATHROW $IMAGE_DATE $INPUTDOWNLOADING_DIR_PATH $INPUTDOWNLOADING_DIR_PATH
+cd $SANDBOX/USGS
+java -Dlog4j.configuration=file:/home/saps/USGS/config/log4j.properties -jar $SANDBOX/USGS/target/USGS-0.0.1-SNAPSHOT-jar-with-dependencies.jar $IMAGE_DATASET $IMAGE_PATHROW $IMAGE_DATE $INPUTDOWNLOADING_DIR_PATH $INPUTDOWNLOADING_DIR_PATH
 PROCESS_OUTPUT=$?
 
 if [ $PROCESS_OUTPUT -eq 0 ]
