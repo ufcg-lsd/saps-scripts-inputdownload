@@ -22,7 +22,7 @@ public class Main {
 		USGSController USGSController = new USGSController(args[0], args[1], args[2], args[3],
 				args[4]);
 		USGSController.startDownload();
-		USGSController.saveMetadata();
+		//USGSController.saveMetadata();
 	}
 
 	private static void checkNumberOfArgs(String[] args) {
