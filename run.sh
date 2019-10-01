@@ -28,7 +28,10 @@ PROCESS_OUTPUT=$?
 
 if [ $PROCESS_OUTPUT -eq 0 ]
 then
-  echo "Step 2. Generate metadata"
+  echo "Step 2. Download raster elevation"
+  wget -P $INPUTDOWNLOADING_DIR_PATH https://github.com/ThiagoWhispher/elevation-raster/raw/master/$IMAGE_PATHROW.tif
+
+  echo "Step 3. Generate metadata"
   bash $SANDBOX/generate_metadata.sh $IMAGE_DATASET $IMAGE_PATHROW $IMAGE_DATE $INPUTDOWNLOADING_DIR_PATH
 fi
 
