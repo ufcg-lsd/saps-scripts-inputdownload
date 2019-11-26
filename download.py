@@ -144,6 +144,5 @@ if __name__ == '__main__':
     scenes_candidates = search(path, row, date_f, dataset)
     if len(scenes_candidates):
       download_scene(scenes_candidates[0], results)
-      os.system('sh /home/saps/get-station-data.sh ' + scenes_candidates[0]['product_id'] + ' ' + results)
     else:
       sys.exit(3)
