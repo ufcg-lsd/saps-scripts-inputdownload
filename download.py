@@ -138,7 +138,7 @@ def get_julian_day(date):
     julian_day += months_year[i]
   julian_day += day
 
-  return format(julian_day)
+  return str(year) + format(julian_day)
 
 if __name__ == '__main__':
   if len(sys.argv) == 5:
@@ -146,8 +146,7 @@ if __name__ == '__main__':
 
     path = path_row[:-3]
     row = path_row[4:]
-    julian_day = get_julian_day(date)
-    date_f = str(year) + julian_day
+    date_f = get_julian_day(date)
     dataset = dataset[-1]
 
     setup(path, row, path, row)
