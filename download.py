@@ -115,21 +115,30 @@ def format(julian_day):
   elif tam == 2: return '0' + str(julian_day)
   else: return str(julian_day)
 
+def check_year(year):
+  if (year % 400 == 0):
+    return True
+  if (year % 100 == 0):  
+    return False
+  if (year % 4 == 0):
+    return True
+  return False
+
 def get_julian_day(date):
   old_leap_year = 1960
-
-  months_leap_year=(31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+  
+  #months_leap_year=(31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
   months_year=(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
-
+  
   year, month, day = map(int, date.split('-'))
   julian_day = 0
   for i in xrange(month-1):
-    if(i == 1 and (year - old_leap_year)%4 == 0):
+    if(i == 1 and check_year(year)):
       julian_day += 1
     julian_day += months_year[i]
   julian_day += day
 
-  return str(year) + format(julian_day)
+  return format(julian_day)
 
 if __name__ == '__main__':
   if len(sys.argv) == 5:
@@ -137,7 +146,8 @@ if __name__ == '__main__':
 
     path = path_row[:-3]
     row = path_row[4:]
-    date_f = get_julian_day(date)
+    julian_day = get_julian_day(date)
+    date_f = str(year) + julian_day
     dataset = dataset[-1]
 
     setup(path, row, path, row)
