@@ -152,6 +152,6 @@ if __name__ == '__main__':
     setup(path, row, path, row)
     scenes_candidates = search(path, row, date_f, dataset)
     if len(scenes_candidates):
-      download_scene(scenes_candidates[0], results)
+      download_scene(scenes_candidates[len(scenes_candidates)-1], results)
     else:
       sys.exit(3)
