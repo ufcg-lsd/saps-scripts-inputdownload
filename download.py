@@ -21,6 +21,10 @@ def download_scene(scene, output_directory):
   elif scene['sensor_number'] == '7': files = files_L7
   else: files = files_L5
   
+  download_urls = []
+
+  FNULL = open(os.devnull, 'w')
+
   for fl in files:
     new_url = ''
     product_band_id = ''
@@ -32,10 +36,26 @@ def download_scene(scene, output_directory):
       product_band_id = scene['product_id'] + '_' + fl + '.TIF'
       new_url = scene['base_download_url'] + '_' + fl + '.TIF'
 
-    FNULL = open(os.devnull, 'w')
-    subprocesses.append((subprocess.Popen(' '.join(['curl', new_url, '--output', output_directory + '/' + product_band_id]), shell=True, stdout=FNULL, stderr=FNULL), scene['scene_id'] + '_' + fl))
+    process_aux = subprocess.Popen(' '.join(['curl -f', new_url]), shell=True, stdout=FNULL, stderr=FNULL)
+    process_aux.wait()
+    exit_code = process_aux.returncode
+
+    print 'File: ', fl
+    print 'Download URL: ', new_url
+    print 'Exit code: ', exit_code
+
+    if exit_code != 0:
+      return False
+    
+    download_urls.append((new_url, product_band_id, fl))
+  
+  for url_file, product_band_id, fl in download_urls:
+    subprocesses.append((subprocess.Popen(' '.join(['curl', url_file, '--output', output_directory + '/' + product_band_id]), shell=True, stdout=FNULL, stderr=FNULL), scene['scene_id'] + '_' + fl))
+
   for (process, scene_id) in subprocesses:
     process.wait()
+
+  return True
 
 def get_processed_at_from_scene_id(scene_id):
   '''
@@ -152,6 +172,12 @@ if __name__ == '__main__':
     setup(path, row, path, row)
     scenes_candidates = search(path, row, date_f, dataset)
     if len(scenes_candidates):
-      download_scene(scenes_candidates[len(scenes_candidates)-1], results)
+      isOK = False
+      for scene_candidate in scenes_candidates:
+        isOK = download_scene(scene_candidate, results)
+        if isOK:
+          sys.exit(0)
+      if not isOK:
+        sys.exit(3)
     else:
       sys.exit(3)
